@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using NewYearMusic.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NewYearMusic.Infrastructure.Identity;
 
 namespace NewYearMusic
 {
@@ -38,7 +39,7 @@ namespace NewYearMusic
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<AppUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

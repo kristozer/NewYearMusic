@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NewYearMusic.Data;
+using NewYearMusic.Infrastructure.Data;
 using NewYearMusic.ViewModels;
 
 namespace NewYearMusic.Pages

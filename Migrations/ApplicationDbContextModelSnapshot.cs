@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NewYearMusic.Data;
+using NewYearMusic.Infrastructure.Data;
 
 namespace NewYearMusic.Migrations
 {

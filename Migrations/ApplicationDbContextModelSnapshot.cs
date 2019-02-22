@@ -201,6 +201,8 @@ namespace NewYearMusic.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<int>("SongId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");

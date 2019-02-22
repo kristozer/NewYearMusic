@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using NewYearMusic.Domain.Entities;
 using NewYearMusic.Infrastructure.Data;
 using NewYearMusic.ViewModels;
 
@@ -17,10 +18,11 @@ namespace NewYearMusic.Pages
         {
             _context = context;
         }
-        public IEnumerable<SongViewModel> OnGet()
+        public SongViewModel SongModel { get; set; } = new SongViewModel();
+        public void OnGet()
         {
-            return _context.Songs.Include(x=>x.User).AsNoTracking()
-            .Select(x=> new SongViewModel{SongId = x.SongId, Author = x.Author, Name = x.Name, User = x.User.UserName})
+            SongModel.SongItems = _context.Songs.Include(x=>x.User).AsNoTracking()
+            .Select(x=> new SongItemViewModel{SongId = x.SongId, Author = x.Author, Name = x.Name, User = x.User.UserName})
             .ToList();
         }
     }

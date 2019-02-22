@@ -6,4 +6,15 @@
 
 <div class="text-center">
     <p>Здесь список.</p>
+     @if (Model.SongModel.SongItems.Any())
+    {
+        <div class="esh-catalog-items row">
+            @foreach (var songItem in Model.SongModel.SongItems)
+            {
+                <div class="esh-catalog-item col-md-4">
+                    @songItem.Name
+                </div>
+            }
+        </div>
+    }
 </div>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NewYearMusic.Migrations
 {
-    public partial class Initial : Migration
+    public partial class NewInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -158,21 +158,22 @@ namespace NewYearMusic.Migrations
                 name: "Songs",
                 columns: table => new
                 {
-                    SongId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SongId = table.Column<int>(nullable: false),
                     Author = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     AppUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Songs", x => x.SongId);
+                    table.PrimaryKey("PK_Songs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Songs_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

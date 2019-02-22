@@ -10,8 +10,8 @@ using NewYearMusic.Infrastructure.Data;
 namespace NewYearMusic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190222120125_MovedSong")]
-    partial class MovedSong
+    [Migration("20190222134542_NewInitial")]
+    partial class NewInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -202,6 +202,8 @@ namespace NewYearMusic.Migrations
                     b.Property<string>("Author");
 
                     b.Property<string>("Name");
+
+                    b.Property<int>("SongId");
 
                     b.HasKey("Id");
 

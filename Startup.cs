@@ -48,6 +48,7 @@ namespace NewYearMusic
             services.AddScoped(typeof(IRepositoryAsync<>), typeof(Repository<>));
 
             services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<IMusicService, MusicService>();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

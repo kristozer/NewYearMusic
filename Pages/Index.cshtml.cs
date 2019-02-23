@@ -18,10 +18,14 @@ namespace NewYearMusic.Pages
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ICatalogService _catalogService;
-        public IndexModel(UserManager<AppUser> userManager, ICatalogService catalogService)
+        private readonly IMusicService _musicService;
+        public IndexModel(UserManager<AppUser> userManager,
+            ICatalogService catalogService,
+            IMusicService musicService)
         {
             _userManager = userManager;
             _catalogService = catalogService;
+            _musicService = musicService;
         }
         public SongViewModel SongModel { get; set; } = new SongViewModel();
         public async Task OnGet()
@@ -31,9 +35,11 @@ namespace NewYearMusic.Pages
         }
         public async Task<IActionResult> OnPost(Song song)
         {
-            if(User.Identity.IsAuthenticated)
-            song.User = await _userManager.GetUserAsync(User);
-
+            if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(song.Name))
+            {
+                song.User = await _userManager.GetUserAsync(User);
+                if (song.User != null) await _musicService.SaveSong(song);
+            }
             return RedirectToPage();
         }
     }

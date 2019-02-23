@@ -3,15 +3,30 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
 <div class="text-center">
-    <p>Здесь список.</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h2>Добавление песен</h2>
+        <form method="post" class="form-inline mb-2">
+             <div class="form-row mx-auto">
+                <div class="col">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Название">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="author" id="author" placeholder="Автор">
+                </div>
+                <div class="col">
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+             </div>
+        </form>
+    }
      @if (Model.SongModel.Songs.Any())
     {
-        <div class="esh-catalog-items row">
+        <div class="row border">
             @foreach (var songItem in Model.SongModel.Songs)
             {
-                <div class="esh-catalog-item col-md-4">
+                <div class="col-md-4">
                     @songItem.Name
                 </div>
             }

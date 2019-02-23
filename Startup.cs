@@ -14,6 +14,8 @@ using NewYearMusic.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewYearMusic.Infrastructure.Identity;
+using NewYearMusic.Domain.Interfaces;
+using NewYearMusic.Domain.Services;
 
 namespace NewYearMusic
 {
@@ -42,7 +44,11 @@ namespace NewYearMusic
             services.AddDefaultIdentity<AppUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+            services.AddScoped(typeof(IRepositoryAsync<>), typeof(Repository<>));
 
+            services.AddScoped<ICatalogService, CatalogService>();
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

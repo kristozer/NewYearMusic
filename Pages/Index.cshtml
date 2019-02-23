@@ -6,10 +6,10 @@
 
 <div class="text-center">
     <p>Здесь список.</p>
-     @if (Model.SongModel.SongItems.Any())
+     @if (Model.SongModel.Songs.Any())
     {
         <div class="esh-catalog-items row">
-            @foreach (var songItem in Model.SongModel.SongItems)
+            @foreach (var songItem in Model.SongModel.Songs)
             {
                 <div class="esh-catalog-item col-md-4">
                     @songItem.Name

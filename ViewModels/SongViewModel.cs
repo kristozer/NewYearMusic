@@ -4,6 +4,6 @@ namespace NewYearMusic.ViewModels
 {
     public class SongViewModel
     {
-        public IEnumerable<SongItemViewModel> SongItems { get; set; }
+        public IEnumerable<SongItemViewModel> Songs { get; set; }
     }
 }

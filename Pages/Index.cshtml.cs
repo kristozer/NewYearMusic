@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,21 +16,25 @@ namespace NewYearMusic.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
         private readonly ICatalogService _catalogService;
-        public IndexModel(ICatalogService catalogService) => _catalogService = catalogService;
+        public IndexModel(UserManager<AppUser> userManager, ICatalogService catalogService)
+        {
+            _userManager = userManager;
+            _catalogService = catalogService;
+        }
         public SongViewModel SongModel { get; set; } = new SongViewModel();
         public async Task OnGet()
         {
-            // SongModel.Songs = _context.Songs.Include(x => x.User).AsNoTracking()
-            // .Select(x => new SongItemViewModel { Id = x.Id, Author = x.Author, Name = x.Name, User = x.User.UserName })
-            // .ToList();
-            var user = new AppUser();
-            SongModel = await _catalogService.GetSongs(user);
+            var userName = User.Identity.Name ?? "";
+            SongModel = await _catalogService.GetSongs(userName);
         }
-        public async Task OnPost()
+        public async Task<IActionResult> OnPost(Song song)
         {
-            RedirectToPage("/Index");
+            if(User.Identity.IsAuthenticated)
+            song.User = await _userManager.GetUserAsync(User);
+
+            return RedirectToPage();
         }
     }
 }

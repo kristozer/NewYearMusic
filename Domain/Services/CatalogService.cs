@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Specifications;
@@ -12,9 +11,9 @@ namespace NewYearMusic.Domain.Services
     {
         private readonly IRepositoryAsync<Song> _songRepository;
         public CatalogService(IRepositoryAsync<Song> songRepository) => _songRepository = songRepository;
-        public async Task<SongViewModel> GetSongs(IdentityUser user)
+        public async Task<SongViewModel> GetSongs(string userName)
         {
-            var songFilterSpec = new SongFilterSpecification(user);
+            var songFilterSpec = new SongFilterSpecification(userName);
             var songs = await _songRepository.ListAsync(songFilterSpec);
             var vm = new SongViewModel()
             {

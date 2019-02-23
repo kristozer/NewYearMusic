@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using NewYearMusic.Domain.Entities;
-using NewYearMusic.Domain.Interfaces;
-using NewYearMusic.Infrastructure.Identity;
 
 namespace NewYearMusic.Domain.Specifications
 {
     public sealed class SongFilterSpecification : BaseSpecification<Song>
     {
-        public SongFilterSpecification(IAppUser user = null)
-        : base(i => user == null || i.User == user)
+        public SongFilterSpecification(IdentityUser user)
+        : base(i => string.IsNullOrEmpty(user.Id) || i.User.Id == user.Id)
         {
             AddInclude(x => x.User);
         }

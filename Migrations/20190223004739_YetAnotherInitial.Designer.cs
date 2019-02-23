@@ -10,8 +10,8 @@ using NewYearMusic.Infrastructure.Data;
 namespace NewYearMusic.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190222134542_NewInitial")]
-    partial class NewInitial
+    [Migration("20190223004739_YetAnotherInitial")]
+    partial class YetAnotherInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -203,8 +203,6 @@ namespace NewYearMusic.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("SongId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -268,7 +266,8 @@ namespace NewYearMusic.Migrations
                 {
                     b.HasOne("NewYearMusic.Infrastructure.Identity.AppUser", "User")
                         .WithMany("Songs")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

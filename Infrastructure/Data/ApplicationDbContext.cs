@@ -17,6 +17,7 @@ namespace NewYearMusic.Infrastructure.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Song>().HasOne(x=>x.User).WithMany(x=>x.Songs).OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(builder);
         }
     }

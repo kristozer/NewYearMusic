@@ -22,7 +22,7 @@ namespace NewYearMusic.Pages
         public void OnGet()
         {
             SongModel.SongItems = _context.Songs.Include(x=>x.User).AsNoTracking()
-            .Select(x=> new SongItemViewModel{SongId = x.SongId, Author = x.Author, Name = x.Name, User = x.User.UserName})
+            .Select(x=> new SongItemViewModel{SongId = x.Id, Author = x.Author, Name = x.Name, User = x.User.UserName})
             .ToList();
         }
     }

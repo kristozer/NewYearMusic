@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
+using NewYearMusic.Domain.Specifications;
 
 namespace NewYearMusic.Domain.Services
 {
@@ -13,5 +14,12 @@ namespace NewYearMusic.Domain.Services
             if (song.Name != null)
                 await _songRepository.AddAsync(song);
         }
+        public async Task DeleteSong(Song song)
+        {
+            if (song.Id > 0)
+                await _songRepository.DeleteAsync(song);
+
+        }
+        public async Task<Song> GetSongById(int id) => await _songRepository.GetByIdAsync(id);
     }
 }

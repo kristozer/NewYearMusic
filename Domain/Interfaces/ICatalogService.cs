@@ -6,5 +6,6 @@ namespace NewYearMusic.Domain.Interfaces
     public interface ICatalogService
     {
          Task<SongViewModel> GetSongs(string userName);
+         Task<SongItemViewModel> GetSong(int id);
     }
 }

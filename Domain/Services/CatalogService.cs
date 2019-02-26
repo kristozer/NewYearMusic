@@ -27,5 +27,14 @@ namespace NewYearMusic.Domain.Services
             };
             return vm;
         }
+        public async Task<SongItemViewModel> GetSong(int id)
+        {
+            var song = await _songRepository.GetByIdAsync(id);
+            var vmi = new SongItemViewModel()
+            {
+                Id = song.Id, Name=song.Name, Author=song.Author, User=song.User.UserName
+            };
+            return vmi;
+        }
     }
 }

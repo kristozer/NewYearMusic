@@ -21,5 +21,6 @@ namespace NewYearMusic.Domain.Services
 
         }
         public async Task<Song> GetSongById(int id) => await _songRepository.GetByIdAsync(id);
+        public async Task UpdateSong(Song song) => await _songRepository.UpdateAsync(song);
     }
 }

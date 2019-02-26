@@ -8,5 +8,6 @@ namespace NewYearMusic.Domain.Interfaces
          Task SaveSong(Song song);
          Task DeleteSong(Song song);
          Task<Song> GetSongById(int id);
+         Task UpdateSong(Song song);
     }
 }

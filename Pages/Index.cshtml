@@ -25,27 +25,33 @@
      @if (Model.SongModel.Songs.Any())
     {
         <div class="row border-bottom box-shadow h4">
-            <div class="col-md-4">
+            <div class="col-lg">
                 Название песни
             </div>
-            <div class="col-md-4">
+            <div class="col-lg">
                 Автор
             </div>
-            <div class="col-md-4">
+            <div class="col-lg">
                 Добавил
+            </div>
+            <div class="col-lg">
             </div>
         </div>
         @foreach (var song in Model.SongModel.Songs)
         {
             <div class="row">
-                <div class="col-md-4 border-bottom">
+                <div class="col-lg border-bottom">
                     @song.Name
                 </div>
-                <div class="col-md-4 border-bottom">
+                <div class="col-lg border-bottom">
                     @song.Author
                 </div>
-                <div class="col-md-4 border-bottom">
+                <div class="col-lg border-bottom">
                     @song.User
+                </div>
+                <div class="col-lg border-bottom">
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="UpdateAsync" asp>Изменить</a>
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="DeleteAsync" asp>Удалить</a>
                 </div>
             </div>
         }

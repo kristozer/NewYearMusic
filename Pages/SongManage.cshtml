@@ -1,0 +1,19 @@
+@page "{handler?}"
+@model SongManageModel
+@{
+    ViewData["Title"] = "Управление";
+}
+<div class="text-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form method="post" class="form-inline mb-2">
+            <div asp-validation-summary="All"></div>
+            <partial name="_song" for="@Model.Song" />
+            <input type="submit" value='@(Model.Action=="Update"?"Изменить":"Удалить")' class="btn btn-primary" asp-page-handler="@Model.Action"  />
+        </form>
+    }
+    else
+    {
+        <span>Зарегистрируйтесь!</span>
+    }
+</div>

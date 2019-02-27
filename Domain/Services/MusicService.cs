@@ -9,18 +9,21 @@ namespace NewYearMusic.Domain.Services
     {
         private readonly IRepositoryAsync<Song> _songRepository;
         public MusicService(IRepositoryAsync<Song> songRepository) => _songRepository = songRepository;
-        public async Task SaveSong(Song song)
+        public async Task SaveSongAsync(Song song)
         {
             if (song.Name != null)
                 await _songRepository.AddAsync(song);
         }
-        public async Task DeleteSong(Song song)
+        public async Task DeleteSongAsync(Song song)
         {
-            if (song.Id > 0)
-                await _songRepository.DeleteAsync(song);
-
+            await _songRepository.DeleteAsync(song);
         }
-        public async Task<Song> GetSongById(int id) => await _songRepository.GetByIdAsync(id);
-        public async Task UpdateSong(Song song) => await _songRepository.UpdateAsync(song);
+        public async Task<Song> GetSongByIdAsync(int id) => await _songRepository.GetByIdAsync(id);
+        public async Task<Song> GetSongWithUserByIdAsync(int id)
+        {
+            var songFilterSpec = new SongFilterSpecification(id: id);
+            return await _songRepository.GetByIdAsync(id, songFilterSpec);
+        }
+        public async Task UpdateSongAsync(Song song) => await _songRepository.UpdateAsync(song);
     }
 }

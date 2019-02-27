@@ -1,4 +1,4 @@
-﻿@page
+﻿@page 
 @model IndexModel
 @{
     ViewData["Title"] = "Список песен на новый год";
@@ -50,8 +50,8 @@
                     @song.User
                 </div>
                 <div class="col-lg border-bottom">
-                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="UpdateAsync" asp>Изменить</a>
-                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="DeleteAsync" asp>Удалить</a>
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="update" asp>Изменить</a>
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="delete" asp>Удалить</a>
                 </div>
             </div>
         }

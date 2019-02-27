@@ -5,9 +5,10 @@ namespace NewYearMusic.Domain.Interfaces
 {
     public interface IMusicService
     {
-         Task SaveSong(Song song);
-         Task DeleteSong(Song song);
-         Task<Song> GetSongById(int id);
-         Task UpdateSong(Song song);
+         Task SaveSongAsync(Song song);
+         Task DeleteSongAsync(Song song);
+         Task<Song> GetSongByIdAsync(int id);
+         Task<Song> GetSongWithUserByIdAsync(int id);
+         Task UpdateSongAsync(Song song);
     }
 }

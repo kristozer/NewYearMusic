@@ -37,7 +37,7 @@ namespace NewYearMusic.Pages
             if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(song.Name))
             {
                 song.User = await _userManager.GetUserAsync(User);
-                if (song.User != null) await _musicService.SaveSong(song);
+                if (song.User != null) await _musicService.SaveSongAsync(song);
             }
             return RedirectToPage();
         }

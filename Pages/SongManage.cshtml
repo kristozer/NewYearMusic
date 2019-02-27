@@ -3,13 +3,17 @@
 @{
     ViewData["Title"] = "Управление";
 }
-<div class="text-center">
+<div class="">
     @if (User.Identity.IsAuthenticated)
     {
-        <form method="post" class="form-inline mb-2">
+        <form method="post" class="mb-2">
             <div asp-validation-summary="All"></div>
-            <partial name="_song" for="@Model.Song" />
-            <input type="submit" value='@(Model.Action=="Update"?"Изменить":"Удалить")' class="btn btn-primary" asp-page-handler="@Model.Action"  />
+            <div class="container">
+                <partial name="_song" for="@Model.Song" />
+                <div class="form-group">
+                    <input type="submit" value='@(Model.Action=="UpdateAsync"?"Изменить":"Удалить")' class="btn btn-primary" asp-page-handler="@Model.Action"  />
+                </div>
+            </div>
         </form>
     }
     else

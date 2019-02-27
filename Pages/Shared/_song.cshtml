@@ -1,9 +1,14 @@
 @model SongItemViewModel
-
     <input type="hidden" asp-for="@Model.Id" name="id" />
-    <label for="name">Название</label>
-    <input type="text" asp-for="@Model.Name" name="name" />
-    <label for="author">Автор</label>
-    <input type="text" asp-for="@Model.Author" name="author" />
-    <label for="user">Пользователь</label>
-    <input type="text" asp-for="@Model.User" name="user" readonly />
+    <div class="form-group">
+      <label for="name">Название</label>
+      <input type="text" asp-for="@Model.Name" class="form-control" name="name" id="name" placeholder="Название">
+    </div>
+    <div class="form-group">
+      <label for="author">Автор</label>
+      <input type="text" asp-for="@Model.Author" class="form-control" name="author" id="author" placeholder="Автор">
+    </div>
+    <div class="form-group">
+      <label for="user">Пользователь</label>
+      <input type="text" asp-for="@Model.User" class="form-control" name="user" id="user" placeholder="Пользователь" readonly>
+    </div>

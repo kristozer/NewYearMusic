@@ -29,7 +29,8 @@ namespace NewYearMusic.Domain.Services
         }
         public async Task<SongItemViewModel> GetSong(int id)
         {
-            var song = await _songRepository.GetByIdAsync(id);
+            var songFilterSpec = new SongFilterSpecification(id: id);
+            var song = await _songRepository.GetByIdAsync(id, songFilterSpec);
             var vmi = new SongItemViewModel()
             {
                 Id = song.Id, Name=song.Name, Author=song.Author, User=song.User.UserName

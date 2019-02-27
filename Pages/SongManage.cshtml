@@ -1,4 +1,4 @@
-@page "{handler?}"
+@page 
 @model SongManageModel
 @{
     ViewData["Title"] = "Управление";
@@ -11,7 +11,7 @@
             <div class="container">
                 <partial name="_song" for="@Model.Song" />
                 <div class="form-group">
-                    <input type="submit" value='@(Model.Action=="UpdateAsync"?"Изменить":"Удалить")' class="btn btn-primary" asp-page-handler="@Model.Action"  />
+                    <input type="submit" value='@(Model.Action=="Update"?"Изменить":"Удалить")' class="btn btn-primary" asp-page-handler="@Model.Action"  />
                 </div>
             </div>
         </form>

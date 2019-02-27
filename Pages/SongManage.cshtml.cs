@@ -19,6 +19,7 @@ namespace NewYearMusic.Pages
         public string Action { get; set; }
         [BindProperty]
         public SongItemViewModel Song { get; set; }
+        private Song _song;
         public async Task<IActionResult> OnGetAsync(int? id, string action)
         {
             Action = action;
@@ -35,29 +36,34 @@ namespace NewYearMusic.Pages
         }
         public async Task<IActionResult> OnPostUpdateAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-            var song = await _musicService.GetSongById(Song.Id);
-            if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(Action))
-            {
-                if (song.Id > 0) await _musicService.UpdateSong(song);
-            }
-            return RedirectToPage("Index");
+            var res = await ValidateRequestAsync();
+            if (res != null) return res;
+            await _musicService.UpdateSongAsync(_song);
+            return RedirectToPage("/Index");
         }
         public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var res = await ValidateRequestAsync();
+            if (res != null) return res;
+            await _musicService.DeleteSongAsync(_song);
+            return RedirectToPage("/Index");
+        }
+        private async Task<IActionResult> ValidateRequestAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            var song = await _musicService.GetSongById(Song.Id);
-            if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(Action))
+            if (!User.Identity.IsAuthenticated)
             {
-                if (song.Id > 0) await _musicService.DeleteSong(song);
+                return Unauthorized();
             }
-            return RedirectToPage("Index");
+            _song = await _musicService.GetSongWithUserByIdAsync(Song.Id);
+            if (_song == null)
+            {
+                return NotFound();
+            }
+            return null;
         }
     }
 }

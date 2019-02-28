@@ -1,9 +1,12 @@
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 namespace NewYearMusic.Pages
 {
     public class SongManageModel : PageModel
@@ -17,6 +20,12 @@ namespace NewYearMusic.Pages
             _musicService = musicService;
         }
         public string Action { get; set; }
+        [BindNever]
+        public string ActionName
+        {
+            get
+            { return Action == "update" ? "Изменить" : "Удалить"; }
+        }
         [BindProperty]
         public SongItemViewModel Song { get; set; }
         private Song _song;
@@ -38,6 +47,8 @@ namespace NewYearMusic.Pages
         {
             var res = await ValidateRequestAsync();
             if (res != null) return res;
+            _song.Name = Song.Name;
+            _song.Author = Song.Author;
             await _musicService.UpdateSongAsync(_song);
             return RedirectToPage("/Index");
         }

@@ -29,7 +29,6 @@ namespace NewYearMusic.Pages
             { return Action == "update" ? "Изменить" : "Удалить"; }
         }
         public SongItemViewModel Song { get; private set; }
-        private Song _song;
         public async Task<IActionResult> OnGetAsync(int? id, string action)
         {
             Action = action;
@@ -44,23 +43,21 @@ namespace NewYearMusic.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostUpdateAsync(/*[ModelBinder(BinderType = typeof(SongModelBinder))] */Song ss)
+        public async Task<IActionResult> OnPostUpdateAsync(Song _song)
         {
-            var res = await ValidateRequestAsync();
+            var res = ValidateRequest(_song);
             if (res != null) return res;
-            _song.Name = Song.Name;
-            _song.Author = Song.Author;
             await _musicService.UpdateSongAsync(_song);
             return RedirectToPage("/Index");
         }
-        public async Task<IActionResult> OnPostDeleteAsync()
+        public async Task<IActionResult> OnPostDeleteAsync(Song _song)
         {
-            var res = await ValidateRequestAsync();
+            var res = ValidateRequest(_song);
             if (res != null) return res;
             await _musicService.DeleteSongAsync(_song);
             return RedirectToPage("/Index");
         }
-        private async Task<IActionResult> ValidateRequestAsync()
+        private IActionResult ValidateRequest(Song song)
         {
             if (!ModelState.IsValid)
             {
@@ -70,8 +67,7 @@ namespace NewYearMusic.Pages
             {
                 return Unauthorized();
             }
-            _song = await _musicService.GetSongWithUserByIdAsync(Song.Id);
-            if (_song == null)
+            if (song == null)
             {
                 return NotFound();
             }

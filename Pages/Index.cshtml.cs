@@ -34,7 +34,7 @@ namespace NewYearMusic.Pages
         }
         public async Task<IActionResult> OnPost(Song song)
         {
-            if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(song.Name))
+            if (User.Identity.IsAuthenticated)//TODO проверка на пустые поля, заносить без названия песни или группы
             {
                 song.User = await _userManager.GetUserAsync(User);
                 if (song.User != null) await _musicService.SaveSongAsync(song);

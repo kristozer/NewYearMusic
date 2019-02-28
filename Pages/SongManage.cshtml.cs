@@ -6,6 +6,7 @@ using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NewYearMusic.Infrastructure.ModelBinders;
 
 namespace NewYearMusic.Pages
 {
@@ -19,6 +20,7 @@ namespace NewYearMusic.Pages
             _catalogService = catalogService;
             _musicService = musicService;
         }
+        [BindRequired]
         public string Action { get; set; }
         [BindNever]
         public string ActionName
@@ -26,8 +28,7 @@ namespace NewYearMusic.Pages
             get
             { return Action == "update" ? "Изменить" : "Удалить"; }
         }
-        [BindProperty]
-        public SongItemViewModel Song { get; set; }
+        public SongItemViewModel Song { get; private set; }
         private Song _song;
         public async Task<IActionResult> OnGetAsync(int? id, string action)
         {
@@ -43,7 +44,7 @@ namespace NewYearMusic.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<IActionResult> OnPostUpdateAsync(/*[ModelBinder(BinderType = typeof(SongModelBinder))] */Song ss)
         {
             var res = await ValidateRequestAsync();
             if (res != null) return res;

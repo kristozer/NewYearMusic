@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NewYearMusic.Infrastructure.Identity;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Services;
+using NewYearMusic.Infrastructure.ModelBinders;
 
 namespace NewYearMusic
 {
@@ -50,7 +51,9 @@ namespace NewYearMusic
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IMusicService, MusicService>();
             
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+                options.ModelBinderProviders.Insert(0, new SongModelBinderProvider()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

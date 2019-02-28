@@ -9,9 +9,9 @@ namespace NewYearMusic.Infrastructure.ModelBinders
     public class SongModelBinder : IModelBinder
     {
         private IMusicService _musicService;
+        public SongModelBinder(IMusicService musicService) => _musicService = musicService;
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
-            _musicService = bindingContext.HttpContext.RequestServices.GetService<IMusicService>();
             if (bindingContext == null)
             {
                 throw new ArgumentNullException(nameof(bindingContext));

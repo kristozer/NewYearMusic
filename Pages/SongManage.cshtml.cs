@@ -45,19 +45,19 @@ namespace NewYearMusic.Pages
         }
         public async Task<IActionResult> OnPostUpdateAsync([ModelBinder(BinderType = typeof(SongModelBinder))]Song _song)
         {
-            var res = ValidateRequest(_song);
+            var res = ValidateAfterBinding(_song);
             if (res != null) return res;
             await _musicService.UpdateSongAsync(_song);
             return RedirectToPage("/Index");
         }
         public async Task<IActionResult> OnPostDeleteAsync([ModelBinder(BinderType = typeof(SongModelBinder))]Song _song)
         {
-            var res = ValidateRequest(_song);
+            var res = ValidateAfterBinding(_song);
             if (res != null) return res;
             await _musicService.DeleteSongAsync(_song);
             return RedirectToPage("/Index");
         }
-        private IActionResult ValidateRequest(Song song)
+        private IActionResult ValidateAfterBinding(Song song)
         {
             if (!ModelState.IsValid)
             {

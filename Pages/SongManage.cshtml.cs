@@ -43,14 +43,14 @@ namespace NewYearMusic.Pages
             }
             return Page();
         }
-        public async Task<IActionResult> OnPostUpdateAsync(Song _song)
+        public async Task<IActionResult> OnPostUpdateAsync([ModelBinder(BinderType = typeof(SongModelBinder))]Song _song)
         {
             var res = ValidateRequest(_song);
             if (res != null) return res;
             await _musicService.UpdateSongAsync(_song);
             return RedirectToPage("/Index");
         }
-        public async Task<IActionResult> OnPostDeleteAsync(Song _song)
+        public async Task<IActionResult> OnPostDeleteAsync([ModelBinder(BinderType = typeof(SongModelBinder))]Song _song)
         {
             var res = ValidateRequest(_song);
             if (res != null) return res;

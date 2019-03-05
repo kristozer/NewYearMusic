@@ -51,8 +51,8 @@ namespace NewYearMusic
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IMusicService, MusicService>();
             
-            services.AddMvc(options =>
-                options.ModelBinderProviders.Insert(0, new SongModelBinderProvider()))
+            services.AddMvc(/*options =>
+                options.ModelBinderProviders.Insert(0, new SongModelBinderProvider())*/)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

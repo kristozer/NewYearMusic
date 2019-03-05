@@ -17,6 +17,7 @@ using NewYearMusic.Infrastructure.Identity;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Services;
 using NewYearMusic.Infrastructure.ModelBinders;
+using NewYearMusic.Infrastructure.Logging;
 
 namespace NewYearMusic
 {
@@ -45,12 +46,14 @@ namespace NewYearMusic
             services.AddDefaultIdentity<AppUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             services.AddScoped(typeof(IRepositoryAsync<>), typeof(Repository<>));
 
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IMusicService, MusicService>();
-            
+
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
             services.AddMvc(/*options =>
                 options.ModelBinderProviders.Insert(0, new SongModelBinderProvider())*/)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

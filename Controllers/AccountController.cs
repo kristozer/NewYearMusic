@@ -50,18 +50,43 @@ namespace NewYearMusic.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-            if(result.RequiresTwoFactor)
+            if (result.RequiresTwoFactor)
             {
                 throw new NotImplementedException();
             }
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return RedirectToLocal(returnUrl);
             }
             ModelState.AddModelError(string.Empty, "Некорректная попытка входа");
             return View(model);
         }
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new AppUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -71,6 +96,13 @@ namespace NewYearMusic.Controllers
             else
             {
                 return RedirectToPage("/Index");
+            }
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
             }
         }
     }

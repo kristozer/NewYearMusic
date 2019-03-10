@@ -10,11 +10,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NewYearMusic.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Services;
+using NewYearMusic.Infrastructure;
+using NewYearMusic.Infrastructure.Data;
 using NewYearMusic.Infrastructure.ModelBinders;
 using NewYearMusic.Infrastructure.Logging;
 
@@ -43,6 +44,8 @@ namespace NewYearMusic
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            StartupExtentions.AddAutoMapperConfiguration();
 
             services.AddScoped(typeof(IRepositoryAsync<>), typeof(Repository<>));
 

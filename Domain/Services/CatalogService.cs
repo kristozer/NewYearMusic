@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Specifications;
@@ -11,8 +13,8 @@ namespace NewYearMusic.Domain.Services
     {
         private readonly IRepositoryAsync<Song> _songRepository;
         private readonly IAppLogger<CatalogService> _logger;
-        public CatalogService(IRepositoryAsync<Song> songRepository, 
-        IAppLogger<CatalogService> logger) 
+        public CatalogService(IRepositoryAsync<Song> songRepository,
+        IAppLogger<CatalogService> logger)
         {
             _songRepository = songRepository;
             _logger = logger;
@@ -24,13 +26,14 @@ namespace NewYearMusic.Domain.Services
             var songs = await _songRepository.ListAsync(songFilterSpec);
             var vm = new SongViewModel()
             {
-                Songs = songs.Select(i => new SongItemViewModel()
-                {
-                    Id = i.Id,
-                    Name = i.Name,
-                    Author = i.Author,
-                    User = i.User.UserName
-                })
+                Songs = Mapper.Map<IReadOnlyList<Song>, IEnumerable<SongItemViewModel>>(songs)
+                //.Select(i => new SongItemViewModel()
+                //{
+                //    Id = i.Id,
+                //    Name = i.Name,
+                //    Author = i.Author,
+                //    User = i.User.UserName
+                //})
             };
             return vm;
         }
@@ -39,10 +42,14 @@ namespace NewYearMusic.Domain.Services
             _logger.LogInformation("CatalogService.GetSong called");
             var songFilterSpec = new SongFilterSpecification(id: id);
             var song = await _songRepository.GetByIdAsync(id, songFilterSpec);
-            var vmi = new SongItemViewModel()
+            var vmi = Mapper.Map<Song, SongItemViewModel>(song);
+                /*new SongItemViewModel()
             {
-                Id = song.Id, Name=song.Name, Author=song.Author, User=song.User.UserName
-            };
+                Id = song.Id,
+                Name = song.Name,
+                Author = song.Author,
+                User = song.User.UserName
+            };*/
             return vmi;
         }
     }

@@ -50,8 +50,8 @@
                     @song.User
                 </div>
                 <div class="col-lg border-bottom">
-                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="update" asp>Изменить</a>
-                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-action="delete" asp>Удалить</a>
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-handler="update">Изменить</a>
+                    <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-handler="delete">Удалить</a>
                 </div>
             </div>
         }

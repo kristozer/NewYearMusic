@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using NewYearMusic.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NewYearMusic.Infrastructure.Identity;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Domain.Services;
 using NewYearMusic.Infrastructure.ModelBinders;
@@ -41,7 +40,7 @@ namespace NewYearMusic
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<AppUser>()
+            services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -52,7 +51,8 @@ namespace NewYearMusic
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
-            services.AddMvc()
+            services.AddMvc(options =>
+                options.ModelBinderProviders.Insert(0, new SongModelBinderProvider()))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -75,7 +75,12 @@ namespace NewYearMusic
 
             app.UseAuthentication();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

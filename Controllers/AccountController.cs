@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewYearMusic.Domain.Interfaces;
-using NewYearMusic.Infrastructure.Identity;
 using NewYearMusic.ViewModels.Account;
 
 namespace NewYearMusic.Controllers
@@ -14,13 +13,13 @@ namespace NewYearMusic.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IAppLogger<AccountController> _logger;
 
         public AccountController(
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             IAppLogger<AccountController> logger)
         {
             _userManager = userManager;
@@ -75,7 +74,7 @@ namespace NewYearMusic.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.Email, Email = model.Email };
+                var user = new IdentityUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

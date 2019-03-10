@@ -9,21 +9,17 @@ using Microsoft.EntityFrameworkCore;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
 using NewYearMusic.Infrastructure.Data;
-using NewYearMusic.Infrastructure.Identity;
 using NewYearMusic.ViewModels;
 
 namespace NewYearMusic.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly ICatalogService _catalogService;
         private readonly IMusicService _musicService;
-        public IndexModel(UserManager<AppUser> userManager,
-            ICatalogService catalogService,
+        public IndexModel(ICatalogService catalogService,
             IMusicService musicService)
         {
-            _userManager = userManager;
             _catalogService = catalogService;
             _musicService = musicService;
         }
@@ -34,12 +30,9 @@ namespace NewYearMusic.Pages
         }
         public async Task<IActionResult> OnPost(Song song)
         {
-            if(!ModelState.IsValid) return RedirectToPage();
-            if (User.Identity.IsAuthenticated)
-            {
-                song.User = await _userManager.GetUserAsync(User);
-                if (song.User != null) await _musicService.SaveSongAsync(song);
-            }
+            if (!ModelState.IsValid) return RedirectToPage();
+            if (song != null)
+                await _musicService.SaveSongAsync(song);
             return RedirectToPage();
         }
     }

@@ -24,33 +24,17 @@ namespace NewYearMusic.Domain.Services
             _logger.LogInformation("CatalogService.GetSongs called");
             var songFilterSpec = new SongFilterSpecification(userName);
             var songs = await _songRepository.ListAsync(songFilterSpec);
-            var vm = new SongViewModel()
+            return new SongViewModel()
             {
                 Songs = Mapper.Map<IReadOnlyList<Song>, IEnumerable<SongItemViewModel>>(songs)
-                //.Select(i => new SongItemViewModel()
-                //{
-                //    Id = i.Id,
-                //    Name = i.Name,
-                //    Author = i.Author,
-                //    User = i.User.UserName
-                //})
             };
-            return vm;
         }
         public async Task<SongItemViewModel> GetSong(int id)
         {
             _logger.LogInformation("CatalogService.GetSong called");
             var songFilterSpec = new SongFilterSpecification(id: id);
             var song = await _songRepository.GetByIdAsync(id, songFilterSpec);
-            var vmi = Mapper.Map<Song, SongItemViewModel>(song);
-                /*new SongItemViewModel()
-            {
-                Id = song.Id,
-                Name = song.Name,
-                Author = song.Author,
-                User = song.User.UserName
-            };*/
-            return vmi;
+            return Mapper.Map<Song, SongItemViewModel>(song);
         }
     }
 }

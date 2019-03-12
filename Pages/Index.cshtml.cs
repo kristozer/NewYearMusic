@@ -24,9 +24,9 @@ namespace NewYearMusic.Pages
             _musicService = musicService;
         }
         public SongViewModel SongModel { get; set; } = new SongViewModel();
-        public async Task OnGet(string userName)
+        public async Task OnGet()
         {
-            SongModel = await _catalogService.GetSongs(userName);
+            SongModel = await _catalogService.GetSongs(string.Empty);
         }
         public async Task<IActionResult> OnPost(Song song)
         {

@@ -192,6 +192,10 @@ namespace NewYearMusic.Migrations
 
                     b.Property<string>("Author");
 
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EditionDate");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("UserId");

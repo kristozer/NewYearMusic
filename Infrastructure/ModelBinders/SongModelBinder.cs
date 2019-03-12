@@ -30,6 +30,7 @@ namespace NewYearMusic.Infrastructure.ModelBinders
             Song model = null;
             var nameSong = bindingContext.ValueProvider.GetValue("Name").FirstValue;
             var authorSong = bindingContext.ValueProvider.GetValue("Author").FirstValue;
+            var descriptionSong = bindingContext.ValueProvider.GetValue("Description").FirstValue;
             var modelName = "id";
             var valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
             bindingContext.ModelState.SetModelValue(modelName, valueProviderResult);
@@ -46,6 +47,8 @@ namespace NewYearMusic.Infrastructure.ModelBinders
                 model = await _musicService.GetSongWithUserByIdAsync(parsedId);
                 model.ChangeAuthor(authorSong);
                 model.ChangeName(nameSong);
+                model.ChangeDescription(descriptionSong);
+                model.ChangeEditionDate(DateTime.Now);
             }
             if (model == null)
             {
@@ -57,7 +60,7 @@ namespace NewYearMusic.Infrastructure.ModelBinders
                     return;
                 }
                 var userSong = await _userManager.FindByNameAsync(bindingContext.HttpContext.User.Identity.Name);
-                model = new Song(nameSong, authorSong, userSong);
+                model = new Song(nameSong, userSong, DateTime.Now, authorSong, descriptionSong);
             }
             bindingContext.Result = ModelBindingResult.Success(model);
             return;

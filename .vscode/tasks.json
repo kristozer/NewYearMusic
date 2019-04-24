@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/NewYearMusic.csproj"
+                "${workspaceFolder}/NewYearMusic.Web.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

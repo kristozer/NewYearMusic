@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using NewYearMusic.Domain.Interfaces;
+using NewYearMusic.Web.Services;
+using NewYearMusic.Web.Infrastructure;
+using NewYearMusic.Data;
+using NewYearMusic.Web.Infrastructure.ModelBinders;
+using NewYearMusic.Web.Infrastructure.Logging;
+using NewYearMusic.Web.Domain.Services;
+using NewYearMusic.Web.Interfaces;
+using NewYearMusic.Domain.Entities;
+
+namespace NewYearMusic.Web
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("NewYearMusic.Web")));
+            services.AddDefaultIdentity<AppUser>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            StartupExtentions.AddAutoMapperConfiguration();
+
+            services.AddScoped(typeof(IRepositoryAsync<>), typeof(Repository<>));
+
+            services.AddScoped<ICatalogService, CatalogService>();
+            services.AddScoped<IMusicService, MusicService>();
+
+            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            services.AddMvc(options =>
+                options.ModelBinderProviders.Insert(0, new SongModelBinderProvider()))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+
+            app.UseAuthentication();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}

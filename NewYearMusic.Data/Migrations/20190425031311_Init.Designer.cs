@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewYearMusic.Data;
 
-namespace NewYearMusic.Web.Migrations
+namespace NewYearMusic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190424132655_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20190425031311_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

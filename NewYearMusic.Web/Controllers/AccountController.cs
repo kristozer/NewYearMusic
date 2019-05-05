@@ -87,6 +87,16 @@ namespace NewYearMusic.Web.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

@@ -8,7 +8,7 @@
         <form method="post" class="mb-2" action="@Url.Action(ViewData["Action"].ToString())">
             <div asp-validation-summary="All"></div>
             <div class="container">
-                <partial name="_song" for="@Model" />
+                <partial name="_Song" for="@Model" />
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="@ViewData["ActionName"]" />
                 </div>

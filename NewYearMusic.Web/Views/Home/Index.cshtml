@@ -1,6 +1,4 @@
-﻿@page
-
-@model IndexModel
+﻿@model IEnumerable<SongItemViewModel>
 @{
     ViewData["Title"] = "Список песен на новый год";
 }
@@ -26,7 +24,7 @@
         </form>
     }
     <div class="container">
-        @if (Model.SongModel.Songs.Any())
+        @if (Model.Any())
         {
             <div class="row border-bottom box-shadow h4">
                 <div class="col-lg">
@@ -44,7 +42,7 @@
                 <div class="col-lg">
                 </div>
             </div>
-            @foreach (var song in Model.SongModel.Songs)
+            @foreach (var song in Model)
             {
                 <div class="row">
                     <div class="col-lg border-bottom">
@@ -60,8 +58,8 @@
                         @song.EditionDate
                     </div>
                     <div class="col-lg border-bottom">
-                        <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-handler="update">Изменить</a>
-                        <a asp-page="SongManage" asp-route-id="@song.Id" asp-route-handler="delete">Удалить</a>
+                        <a asp-controller="SongManage" asp-route-id="@song.Id" asp-route-actionHandler="update">Изменить</a>
+                        <a asp-controller="SongManage" asp-route-id="@song.Id" asp-route-actionHandler="delete">Удалить</a>
                     </div>
                 </div>
             }

@@ -17,14 +17,11 @@ namespace NewYearMusic.Web.Services
         {
             _songRepository = songRepository;
         }
-        public async Task<SongViewModel> GetSongs(string userName)
+        public async Task<IEnumerable<SongItemViewModel>> GetSongs(string userName)
         {
             var songFilterSpec = new SongFilterSpecification(userName);
             var songs = await _songRepository.ListAsync(songFilterSpec);
-            return new SongViewModel()
-            {
-                Songs = Mapper.Map<IReadOnlyList<Song>, IEnumerable<SongItemViewModel>>(songs)
-            };
+            return Mapper.Map<IReadOnlyList<Song>, IEnumerable<SongItemViewModel>>(songs);
         }
         public async Task<SongItemViewModel> GetSong(int id)
         {

@@ -1,25 +1,17 @@
-using Microsoft.AspNetCore.Identity;
 using System;
-using System.ComponentModel;
 
 namespace NewYearMusic.Domain.Entities
 {
     public class Song : BaseEntity
     {
-
-        [DisplayName("Наименование")]
         public string Name { get; private set; }
 
-        [DisplayName("Автор")]
         public string Author { get; private set; }
 
-        [DisplayName("Описание")]
         public string Description { get; private set; }
 
-        [DisplayName("Дата редактирования")]
         public DateTime EditionDate { get; private set; }
 
-        [DisplayName("Пользователь")]
         public string AppUserId { get; private set; }
         public AppUser AppUser { get; set; }
 

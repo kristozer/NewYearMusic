@@ -1,60 +1,69 @@
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using NewYearMusic.Domain.Entities;
 using NewYearMusic.Domain.Interfaces;
-using NewYearMusic.Web.ViewModels;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using NewYearMusic.Web.Infrastructure.ModelBinders;
 using NewYearMusic.Web.Interfaces;
 
-namespace NewYearMusic.Web.Pages
+namespace NewYearMusic.Web.Controllers
 {
-    public class SongManageModel : PageModel
+    public class SongManageController : Controller
     {
         private readonly ICatalogService _catalogService;
         private readonly IMusicService _musicService;
 
-        public SongManageModel(ICatalogService catalogService, IMusicService musicService)
+        public SongManageController(ICatalogService catalogService, IMusicService musicService)
         {
             _catalogService = catalogService;
             _musicService = musicService;
         }
-        public SongItemViewModel Song { get; private set; }
-        public async Task<IActionResult> OnGetAsync(int? id, string handler)
+
+        [HttpGet]
+        public async Task<IActionResult> Index(int? id, string actionHandler)
         {
-            ViewData["ActionName"] = handler == "update" ? "Изменить" : "Удалить";
             if (id == null)
-            {
-                NotFound();
-            }
-            Song = await _catalogService.GetSong((int)id);
-            if (Song == null)
             {
                 return NotFound();
             }
-            return Page();
+
+            var song = await _catalogService.GetSong((int)id);
+
+            if (song == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["ActionName"] = actionHandler == "update" ? "Изменить" : "Удалить";
+            ViewData["Action"] = actionHandler == "update" ? "UpdateAsync" : "DeleteAsync";
+
+            return View("View", song);
         }
-        public async Task<IActionResult> OnPostUpdateAsync(Song _song)
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAsync(Song _song)
         {
             var res = ValidateAfterBinding(_song);
             if (res != null) return res;
             await _musicService.UpdateSongAsync(_song);
-            return RedirectToPage("/Index");
+            return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> OnPostDeleteAsync(Song _song)
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAsync(Song _song)
         {
             var res = ValidateAfterBinding(_song);
             if (res != null) return res;
             await _musicService.DeleteSongAsync(_song);
-            return RedirectToPage("/Index");
+            return RedirectToAction("Index", "Home");
         }
+
         private IActionResult ValidateAfterBinding(Song song)
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToAction();
             }
             if (song == null)
             {

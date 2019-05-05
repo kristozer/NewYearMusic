@@ -95,7 +95,7 @@ namespace NewYearMusic.Web.Controllers
             }
             else
             {
-                return RedirectToPage("/Index");
+                return RedirectToAction("Index", "Home");
             }
         }
         private void AddErrors(IdentityResult result)

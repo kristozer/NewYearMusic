@@ -1,17 +1,16 @@
-@page "{handler}/{id}"
-@model SongManageModel
+﻿@model SongItemViewModel
 @{
     ViewData["Title"] = "Управление";
 }
 <div class="">
     @if (User.Identity.IsAuthenticated)
     {
-        <form method="post" class="mb-2">
+        <form method="post" class="mb-2" action="@Url.Action(ViewData["Action"].ToString())">
             <div asp-validation-summary="All"></div>
             <div class="container">
-                <partial name="_song" for="@Model.Song" />
+                <partial name="_song" for="@Model" />
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="@ViewData["ActionName"]"  />
+                    <input type="submit" class="btn btn-primary" value="@ViewData["ActionName"]" />
                 </div>
             </div>
         </form>
